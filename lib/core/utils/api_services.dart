@@ -11,6 +11,7 @@ class Api {
     final BaseOptions options = BaseOptions(
       baseUrl: baseurl,
       receiveDataWhenStatusError: true,
+      headers: {'ngrok-skip-browser-warning': 'true'},
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
     );
@@ -25,22 +26,10 @@ class Api {
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
-          print('Request Headers: ${options.headers}');
+          // print('Request Headers: ${options.headers}');
 
           handler.next(options);
         },
-        // onError: (DioException e, handler) {
-        //   // Handle token refresh logic here if needed
-
-        //   print('Error occurred: ${e.message}');
-
-        //   // إذا كانت هناك استجابة تحتوي على تفاصيل الخطأ
-        //   if (e.response != null) {
-        //     print('Response status code: ${e.response?.statusCode}');
-        //     print('Response data: ${e.response?.data}');
-        //   }
-        //   handler.next(e);
-        // },
       ),
     );
   }
@@ -94,8 +83,10 @@ class Api {
         queryParameters: queryParameters,
         options: Options(headers: headers),
       );
+      print("==============================$response");
       return Right(response.data);
     } on DioException catch (dioException) {
+      print('we are left ===============');
       return Left(handleDioError(dioException));
     } catch (e) {
       return const Left(UnknownFailure());

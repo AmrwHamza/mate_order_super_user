@@ -41,9 +41,9 @@ class LoginCubit extends Cubit<LoginState> {
  Future<void> saveToken(String token) async {
   try {
     await SecureStorage.setItem('userToken', token);
-    debugPrint('Token has been saved successfully: $token');
+    // debugPrint('Token has been saved successfully: $token');
   } catch (e) {
-    debugPrint('Error saving token: $e');
+    // debugPrint('Error saving token: $e');
   }
 }
 

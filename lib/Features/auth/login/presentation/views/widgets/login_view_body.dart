@@ -79,7 +79,7 @@ class LoginViewBody extends StatelessWidget {
                   ),
                   CustomTextFormField(
                     onChanged: (p0) {
-                      BlocProvider.of<LoginCubit>(context).phone = '+963$p0';
+                      BlocProvider.of<LoginCubit>(context).phone = '963$p0';
                     },
                     label: const Text(
                       'Phone Number',
