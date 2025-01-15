@@ -16,23 +16,30 @@ class _DragViewState extends State<DragView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DroppedFileWidget(file: file),
-              const SizedBox(height: 16),
-              Container(
-                height: 300,
-                child: DragDropFile(
-                  onDroppeedFile: (file) => setState(() {
-                    this.file = file;
-                  }),
-                ),
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DroppedFileWidget(file: file),
+            const SizedBox(height: 16),
+            Container(
+              height: 300,
+              child: DragDropFile(
+                onDroppeedFile: (file) => setState(() {
+                  this.file = file;
+                }),
               ),
-            ],
-          )),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, file); // إرجاع الملف
+              },
+              child: const Text('save'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

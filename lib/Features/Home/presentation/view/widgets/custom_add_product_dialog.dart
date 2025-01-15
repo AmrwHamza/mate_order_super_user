@@ -1,13 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mate_order_super_user/Features/Home/data/models/dropped_file.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/drag_drop_file.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/drag_view.dart';
+import 'package:mate_order_super_user/Features/Home/presentation/view_model/add_product/add_product_cubit.dart';
 import 'package:mate_order_super_user/constants.dart';
 
-class CustomAddProductDialog extends StatelessWidget {
+class CustomAddProductDialog extends StatefulWidget {
   CustomAddProductDialog({super.key});
+
+  @override
+  State<CustomAddProductDialog> createState() => _CustomAddProductDialogState();
+}
+
+class _CustomAddProductDialogState extends State<CustomAddProductDialog> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> _categories = ['Personal', 'Work', 'Other'];
+
+  final List<String> _categories = [
+    'Food',
+    'Drinks',
+    'Clothes',
+    'Toys',
+    'Books',
+    'Tools',
+    'Electronics',
+    'Furniture',
+    'Kitchen',
+  ];
+
   String? _category;
+
+  DroppedFile? file;
+
+  String? _productName;
+
+  int? _amount;
+
+  double? _price;
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +101,9 @@ class CustomAddProductDialog extends StatelessWidget {
                         );
                       }).toList(),
                       onChanged: (value) {
-                        // setState(() {
-                        //   _category = value;
-                        // });
+                        setState(() {
+                          _category = value;
+                        });
                       },
                       validator: (value) =>
                           value == null ? 'Please select a category' : null,
@@ -98,10 +127,10 @@ class CustomAddProductDialog extends StatelessWidget {
                       fillColor: kPrimaryColor10,
                     ),
                     onChanged: (value) {
-                      //
+                      _productName = value;
                     },
                     validator: (value) =>
-                        value!.isEmpty ? 'Please enter a task title' : null,
+                        value!.isEmpty ? 'Please enter a product name' : null,
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -121,10 +150,10 @@ class CustomAddProductDialog extends StatelessWidget {
                       fillColor: kPrimaryColor10,
                     ),
                     onChanged: (value) {
-                      //
+                      _amount = int.tryParse(value);
                     },
                     validator: (value) =>
-                        value!.isEmpty ? 'Please enter amount' : null,
+                        value!.isEmpty ? 'Please enter an amount' : null,
                   ),
                   const Text(
                     "Price",
@@ -143,49 +172,80 @@ class CustomAddProductDialog extends StatelessWidget {
                       fillColor: kPrimaryColor10,
                     ),
                     onChanged: (value) {
-                      //
+                      _price = double.tryParse(value);
                     },
                     validator: (value) =>
-                        value!.isEmpty ? 'Please enter amount' : null,
+                        value!.isEmpty ? 'Please enter a price' : null,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) {
-                            return DragView();
-                          },
-                        ));
-                      },
-                      child: Text('Add photo')),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // if (_category == 'Other' &&
-                          //     _newCategory != null &&
-                          //     _newCategory!.isNotEmpty) {
-                          //   _categories.add(_newCategory!);
-                          //   _category = _newCategory;
-                          // }
-                          Navigator.of(context).pop();
+                      onPressed: () async {
+                        final selectedFile = await Navigator.push<DroppedFile>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DragView(),
+                          ),
+                        );
+                        if (selectedFile != null) {
+                          file = selectedFile; // تحديث الملف المختار
                         }
                       },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            const WidgetStatePropertyAll(Colors.amber), //////
-                        shape: WidgetStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
+                      child: Text('Add photo')),
+                  BlocConsumer<AddProductCubit, AddProductState>(
+                    listener: (context, state) {
+                      if (state is AddProductSuccess) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Product added successfully!')),
+                        );
+                      } else if (state is AddProductError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error: ${state.message}')),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AddProductLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      return SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate() &&
+                                file != null) {
+                              context.read<AddProductCubit>().addProduct(
+                                    name: _productName!,
+                                    amount: _amount!,
+                                    price: _price!,
+                                    category: _category!,
+                                    file: file!,
+                                  );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Please fill all fields and add a photo')),
+                              );
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: const WidgetStatePropertyAll(
+                                Colors.amber), //////
+                            shape: WidgetStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            'Save',
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
-                      ),
-                      child: const Text(
-                        'Save',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ],
               )),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mate_order_super_user/Features/Home/data/repository/add_product_service.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/home_view.dart';
+import 'package:mate_order_super_user/Features/Home/presentation/view_model/add_product/add_product_cubit.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/delete_cubit/delete_cubit_cubit.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
+import 'package:mate_order_super_user/Features/Home/presentation/view_model/refresh/refresh_cubit.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/view-models/cubit/login_cubit.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/views/login_view.dart';
 import 'package:mate_order_super_user/core/bloc_helper/observer.dart';
@@ -52,6 +55,8 @@ class MateOrderApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LoginCubit()),
         BlocProvider(create: (context) => GetAllProductsCubit()),
+        BlocProvider(create: (context) => AddProductCubit(AddProductService())),
+        BlocProvider(create: (context) => RefreshCubit()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
