@@ -29,6 +29,7 @@ class MateOrderApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
       initialLocation: isLoggedIn ? '/home' : '/',
+      // initialLocation: '/home',
       routes: [
         GoRoute(
           path: '/', // مسار الصفحة الرئيسية
@@ -55,8 +56,6 @@ class MateOrderApp extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         color: Colors.white,
-        
-
         routerConfig: router,
       ),
     );
