@@ -9,11 +9,11 @@ import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_
 import '../../../../../../constants.dart';
 import '../../../../../../core/utils/assets.dart';
 
-class CardOfProduct extends StatelessWidget {
+class ProductCardInArchive extends StatelessWidget {
   int numberOfproducts = 1;
   final Product product;
 
-  CardOfProduct({
+  ProductCardInArchive({
     super.key,
     required this.product,
   });
@@ -85,43 +85,6 @@ class CardOfProduct extends StatelessWidget {
                   const Text('SYP')
                 ],
               ),
-              Row(
-                children: [
-                  BlocProvider(
-                    create: (context) => DeleteCubitCubit(),
-                    child: BlocConsumer<DeleteCubitCubit, DeleteCubitState>(
-                      listener: (context, state) {
-                        if (state is DeleteCubitError) {
-                          showCustomDialog(
-                              context: context,
-                              title: 'Error',
-                              content: state.message);
-                        } else if (state is DeleteCubitSuccess) {
-                          context.read<GetAllProductsCubit>().getProducts();
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is DeleteCubitLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        return ElevatedButton(
-                            onPressed: () {
-                              context
-                                  .read<DeleteCubitCubit>()
-                                  .delete(id: product.id!);
-                            },
-                            style: const ButtonStyle(
-                                backgroundColor:  WidgetStatePropertyAll(
-                                    Colors.redAccent)),
-                            child: const Text('Delete',style: TextStyle(color: Colors.black),));
-                      },
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),

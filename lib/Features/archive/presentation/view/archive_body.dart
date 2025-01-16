@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/card_of_product.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
+import 'package:mate_order_super_user/Features/archive/presentation/model_view/cubit/get_archive_cubit.dart';
+import 'package:mate_order_super_user/Features/archive/presentation/view/product_card_in_archive.dart';
 import 'package:mate_order_super_user/constants.dart';
 
-class HomeViewBody extends StatelessWidget {
-  const HomeViewBody({super.key});
+class ArchiveBody extends StatelessWidget {
+  const ArchiveBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    context.read<GetAllProductsCubit>().getProducts();
-    return BlocConsumer<GetAllProductsCubit, GetAllProductsState>(
+    context.read<GetArchiveCubit>().getArchive();
+    return BlocConsumer<GetArchiveCubit, GetArchiveState>(
       listener: (context, state) {
-        if (state is GetAllProductsError) {
+        if (state is GetArchiveError) {
           showCustomDialog(
-              context: context, title: 'Error', content: state.error);
+              context: context, title: 'Error', content: state.message);
         }
       },
       builder: (context, state) {
-        if (state is GetAllProductsLoading) {
+        if (state is GetArchiveLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        }
-
-        if (state is GetAllProductsSuccess) {
+        } else if (state is GetArchiveSuccess) {
           return GridView.builder(
             // addAutomaticKeepAlives: true,
 
@@ -38,7 +36,7 @@ class HomeViewBody extends StatelessWidget {
                   width: 100,
                 );
               } else {
-                return CardOfProduct(product: state.products[index]);
+                return ProductCardInArchive(product: state.products[index]);
               }
             },
           );
@@ -46,5 +44,6 @@ class HomeViewBody extends StatelessWidget {
         return const SizedBox.shrink();
       },
     );
+    ;
   }
 }

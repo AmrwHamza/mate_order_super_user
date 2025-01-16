@@ -7,6 +7,8 @@ import 'package:mate_order_super_user/Features/Home/presentation/view_model/add_
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/delete_cubit/delete_cubit_cubit.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/refresh/refresh_cubit.dart';
+import 'package:mate_order_super_user/Features/archive/presentation/model_view/cubit/get_archive_cubit.dart';
+import 'package:mate_order_super_user/Features/archive/presentation/view/archive_view.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/view-models/cubit/login_cubit.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/views/login_view.dart';
 import 'package:mate_order_super_user/core/bloc_helper/observer.dart';
@@ -48,6 +50,10 @@ class MateOrderApp extends StatelessWidget {
           path: '/home',
           builder: (context, state) => const HomeView(),
         ),
+        GoRoute(
+          path: '/archive',
+          builder: (context, state) => const ArchiveView(),
+        ),
       ],
     );
 
@@ -57,6 +63,7 @@ class MateOrderApp extends StatelessWidget {
         BlocProvider(create: (context) => GetAllProductsCubit()),
         BlocProvider(create: (context) => AddProductCubit(AddProductService())),
         BlocProvider(create: (context) => RefreshCubit()),
+        BlocProvider(create: (context) => GetArchiveCubit()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -71,10 +78,8 @@ Future<bool> checkIfLoggedInUser() async {
   final token = await SecureStorage.getItem('userToken');
 
   if (token != null && token.isNotEmpty) {
-    // debugPrint('User token found: $token');
     return true;
   } else {
-    // debugPrint('No token found. User needs to log in.');
     return false;
   }
 }

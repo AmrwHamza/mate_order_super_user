@@ -16,8 +16,15 @@ AppBar mainAppBar(String title) {
     backgroundColor: kPrimaryColor4,
     centerTitle: true,
     title: Text(
-      title, 
+      title,
       style: const TextStyle(color: Colors.white),
+    ),
+    leading: Builder(
+      builder: (context) => IconButton(
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          icon: const Icon(Icons.menu)),
     ),
   );
 }
