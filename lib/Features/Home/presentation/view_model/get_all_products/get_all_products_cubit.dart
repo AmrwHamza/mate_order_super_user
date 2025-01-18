@@ -15,11 +15,8 @@ class GetAllProductsCubit extends Cubit<GetAllProductsState> {
     result.fold(
       (l) => emit(GetAllProductsError(error: l.message)),
       (r) {
-        // if (r.products!.isNotEmpty || r.products != null) {
         emit(GetAllProductsSuccess(products: r.products!));
-        // } else {
-        //   emit(GetAllProductsError(error: r.message!));
-        // }
+       
       },
     );
   }

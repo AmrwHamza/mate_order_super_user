@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mate_order_super_user/Features/Home/data/models/dropped_file.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/drag_drop_file.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/drag_view.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/add_product/add_product_cubit.dart';
+import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
 import 'package:mate_order_super_user/constants.dart';
 
 class CustomAddProductDialog extends StatefulWidget {
-  CustomAddProductDialog({super.key});
+  const CustomAddProductDialog({super.key});
 
   @override
   State<CustomAddProductDialog> createState() => _CustomAddProductDialogState();
@@ -43,16 +43,17 @@ class _CustomAddProductDialogState extends State<CustomAddProductDialog> {
     return Dialog(
       child: SingleChildScrollView(
         child: Container(
+          width: MediaQuery.of(context).size.width * 0.5,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                offset: Offset(6, 6),
-                spreadRadius: 2,
-                blurStyle: BlurStyle.solid,
-              ),
+              // BoxShadow(
+              //   color: Colors.black,
+              //   offset: Offset(6, 6),
+              //   spreadRadius: 2,
+              //   blurStyle: BlurStyle.solid,
+              // ),
             ],
           ),
           padding: const EdgeInsets.all(12),
@@ -179,18 +180,25 @@ class _CustomAddProductDialogState extends State<CustomAddProductDialog> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(kPrimaryColor9)),
                       onPressed: () async {
                         final selectedFile = await Navigator.push<DroppedFile>(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DragView(),
+                            builder: (context) => const DragView(),
                           ),
                         );
                         if (selectedFile != null) {
-                          file = selectedFile; // تحديث الملف المختار
+                          file = selectedFile; 
                         }
                       },
-                      child: Text('Add photo')),
+                      child: const Text(
+                        'Add photo',
+                        style: TextStyle(color: Colors.black),
+                      )),
+                  const SizedBox(height: 20),
                   BlocConsumer<AddProductCubit, AddProductState>(
                     listener: (context, state) {
                       if (state is AddProductSuccess) {
@@ -198,6 +206,8 @@ class _CustomAddProductDialogState extends State<CustomAddProductDialog> {
                           const SnackBar(
                               content: Text('Product added successfully!')),
                         );
+                        context.read<GetAllProductsCubit>().getProducts();
+                        Navigator.pop(context);
                       } else if (state is AddProductError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Error: ${state.message}')),

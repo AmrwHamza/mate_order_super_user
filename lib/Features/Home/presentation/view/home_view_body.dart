@@ -9,7 +9,9 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<GetAllProductsCubit>().getProducts();
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return BlocConsumer<GetAllProductsCubit, GetAllProductsState>(
       listener: (context, state) {
         if (state is GetAllProductsError) {
@@ -27,9 +29,14 @@ class HomeViewBody extends StatelessWidget {
         if (state is GetAllProductsSuccess) {
           return GridView.builder(
             // addAutomaticKeepAlives: true,
+            padding: const EdgeInsets.all(10),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: (screenWidth ~/ 200),
+              mainAxisSpacing: screenHeight * 0.01,
+              crossAxisSpacing: screenWidth * 0.02,
+              childAspectRatio: 3 / 3.9,
+            ),
 
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, mainAxisSpacing: 10, crossAxisSpacing: 10),
             itemCount: state.products.length + 5,
             itemBuilder: (context, index) {
               if (index >= state.products.length) {

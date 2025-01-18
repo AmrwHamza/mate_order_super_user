@@ -34,17 +34,17 @@ class DroppedFileWidget extends StatelessWidget {
         child: Center(
             child: Text(
           s,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
         )),
       );
 
   Widget buildFileDetails(DroppedFile droppedFile) {
-    final style = TextStyle(fontSize: 20);
+    const style = TextStyle(fontSize: 20);
 
     return Container(
-      margin: EdgeInsets.only(left: 24),
+      margin: const EdgeInsets.only(left: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

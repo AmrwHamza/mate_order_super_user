@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart' as transition;
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/view-models/cubit/login_cubit.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/views/widgets/custom_register_button.dart';
@@ -79,7 +76,8 @@ class LoginViewBody extends StatelessWidget {
                   ),
                   CustomTextFormField(
                     onChanged: (p0) {
-                      BlocProvider.of<LoginCubit>(context).phone = '963$p0';///////////////////////////edit+
+                      BlocProvider.of<LoginCubit>(context).phone =
+                          '+963$p0'; ///////////////////////////edit+
                     },
                     label: const Text(
                       'Phone Number',
@@ -89,9 +87,9 @@ class LoginViewBody extends StatelessWidget {
                       if (value!.isEmpty) {
                         return "Required field";
                       }
-                      // else if (!value.startsWith('9') || value.length != 9) {
-                      //   return "wrong number it must be like 9xxxxxxxx";
-                      // }
+                      else if (!value.startsWith('9') || value.length != 9) {
+                        return "wrong number it must be like 9xxxxxxxx";
+                      }
                       return null;
                     },
                     prefixText: '+963',

@@ -8,18 +8,19 @@ class GetAllProductsModul {
     if (json['data'] != null) {
       products = <Product>[];
       json['data'].forEach((v) {
-        products!.add(new Product.fromJson(v));
+        products!.add(Product.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.products != null) {
-      data['data'] = this.products!.map((v) => v.toJson()).toList();
+    // ignore: prefer_collection_literals
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (products != null) {
+      data['data'] = products!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -62,17 +63,18 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['store_id'] = this.storeId;
-    data['name'] = this.name;
-    data['amount'] = this.amount;
-    data['price'] = this.price;
-    data['category'] = this.category;
-    data['active'] = this.active;
-    data['image_path'] = this.imagePath;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    // ignore: prefer_collection_literals
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['store_id'] = storeId;
+    data['name'] = name;
+    data['amount'] = amount;
+    data['price'] = price;
+    data['category'] = category;
+    data['active'] = active;
+    data['image_path'] = imagePath;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

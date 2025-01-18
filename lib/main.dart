@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mate_order_super_user/Features/Home/data/repository/add_product_service.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/home_view.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/add_product/add_product_cubit.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view_model/delete_cubit/delete_cubit_cubit.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view_model/refresh/refresh_cubit.dart';
 import 'package:mate_order_super_user/Features/archive/presentation/model_view/cubit/get_archive_cubit.dart';
 import 'package:mate_order_super_user/Features/archive/presentation/view/archive_view.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/view-models/cubit/login_cubit.dart';
 import 'package:mate_order_super_user/Features/auth/login/presentation/views/login_view.dart';
+import 'package:mate_order_super_user/Features/auth/logout/presentation/view_model/cubit/logout_cubit.dart';
 import 'package:mate_order_super_user/core/bloc_helper/observer.dart';
 
 import 'core/helpers/shared_pref.dart';
@@ -37,14 +37,9 @@ class MateOrderApp extends StatelessWidget {
       // initialLocation: '/home',
       routes: [
         GoRoute(
-          path: '/', // مسار الصفحة الرئيسية
+          path: '/',
           builder: (context, state) => const LoginView(),
-          routes: [
-            // GoRoute(
-            //   path: 'about', // مسار صفحة "About"
-            //   // builder: (context, state) => AboutPage(),
-            // ),
-          ],
+         
         ),
         GoRoute(
           path: '/home',
@@ -64,6 +59,8 @@ class MateOrderApp extends StatelessWidget {
         BlocProvider(create: (context) => AddProductCubit(AddProductService())),
         BlocProvider(create: (context) => RefreshCubit()),
         BlocProvider(create: (context) => GetArchiveCubit()),
+        BlocProvider(create: (context) => LogoutCubit()),
+     
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

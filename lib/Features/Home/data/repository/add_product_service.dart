@@ -47,11 +47,7 @@ class AddProductService {
       required String category,
       required DroppedFile file}) async {
     try {
-      print(
-          '==name:${name},==amount:${amount},price:${price},category:${category} ,file:${file.name} ');
-      // if (!['jpg', 'jpeg', 'png'].contains(file.name.toLowerCase())) {
-      //   throw Exception('Unsupported file format');
-      // }
+      
 
       final Uint8List fileBytes = await XFile(file.url).readAsBytes();
 
@@ -62,14 +58,11 @@ class AddProductService {
         'category': category,
         'image': MultipartFile.fromBytes(fileBytes, filename: file.name),
       });
-      print('Form Data: $formData');
-      print('Headers: ${dio.options.headers}');
 
       final response = await dio.post(
         '${baseurl}createProduct',
         data: formData,
       );
-      print(response);
       return Right(AddProductModul.fromJson(response.data));
     } on DioException catch (dioException) {
       return Left(handleDioError(dioException));

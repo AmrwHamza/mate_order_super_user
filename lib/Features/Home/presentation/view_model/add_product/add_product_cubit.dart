@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mate_order_super_user/Features/Home/data/models/add_product_model.dart';
@@ -20,8 +21,7 @@ class AddProductCubit extends Cubit<AddProductState> {
   }) async {
     emit(AddProductLoading());
 
-    // print(
-    //     '==name:${name},==amount:${amount},price:${price},category:${category} ,file:${file.name} ');
+  
     final result = await addProductService.addProduct(
       name: name,
       amount: amount,

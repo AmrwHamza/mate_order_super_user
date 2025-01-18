@@ -1,19 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+
 import 'package:mate_order_super_user/Features/Home/data/models/get_all_products.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view_model/delete_cubit/delete_cubit_cubit.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
+import 'dart:ui_web' as ui;
+import 'dart:html' as html;
 
 import '../../../../../../constants.dart';
 import '../../../../../../core/utils/assets.dart';
 
 class ProductCardInArchive extends StatelessWidget {
-  int numberOfproducts = 1;
   final Product product;
 
-  ProductCardInArchive({
+  const ProductCardInArchive({
     super.key,
     required this.product,
   });
@@ -57,33 +54,24 @@ class ProductCardInArchive extends StatelessWidget {
               ),
               AspectRatio(
                 aspectRatio: 3.4 / 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      // image:AssetImage() ,
-                      // image: AssetImage(AssetsData.product),
-                      // image: NetworkImage(
-                      //     "https://c862-130-180-148-76.ngrok-free.app/storage/project/products/11/Screenshot (7).png"
-                      //     "https://a8bc-146-70-202-35.ngrok-free.app/storage/project/products/4/Tile_Border_Travertine.bmp"), //products/5/PSX_20200918_165328.jpg
-                      image: image(product),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
+                child: buildImg("$baseurlImg${product.imagePath!}"),
               ),
               Text(
-                product.name ?? 'No Name',
+                "Name: ${product.name}",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${product.price} ",
+                    "Price: ${product.price} ",
                   ),
                   const Text('SYP')
                 ],
+              ),
+              Text(
+                "Amount: ${product.amount}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -92,20 +80,18 @@ class ProductCardInArchive extends StatelessWidget {
     );
   }
 
-  ImageProvider image(Product product) {
-    if (product.imagePath != null) {
-      try {
-        // return CachedNetworkImageProvider(
-        //   "$baseurlImg"
-        //   "${product.imagePath!}",
-        // );
-        return NetworkImage("$baseurlImg"
-            "${product.imagePath!}");
-      } catch (e) {
-        return const AssetImage(AssetsData.product);
-      }
-    } else {
-      return const AssetImage(AssetsData.product);
-    }
+  Widget buildImg(String imageUrl) {
+    final String imageUrlWithBypass = '$imageUrl?ngrok-skip-browser-warning';
+    final String imageElementId = 'image-${imageUrlWithBypass.hashCode}';
+    ui.platformViewRegistry.registerViewFactory(imageElementId, (int viewId) {
+      final img = html.ImageElement()
+        ..src = imageUrlWithBypass
+        ..style.width = '100%'
+        ..style.height = '100%'
+        ..alt = 'Image not loaded';
+      return img;
+    });
+
+    return HtmlElementView(viewType: imageElementId);
   }
 }

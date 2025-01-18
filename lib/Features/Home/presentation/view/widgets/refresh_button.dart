@@ -27,6 +27,7 @@ class RefreshButton extends StatelessWidget {
         return SizedBox(
           width: 100,
           child: FloatingActionButton(
+            backgroundColor: kPrimaryColor7,
             onPressed: () {
               context.read<RefreshCubit>().refresh();
             },

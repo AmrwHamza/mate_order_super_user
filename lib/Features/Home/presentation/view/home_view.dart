@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/home_view_body.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/custom_add_product_dialog.dart';
 import 'package:mate_order_super_user/Features/Home/presentation/view/widgets/refresh_button.dart';
-import 'package:mate_order_super_user/Features/Home/presentation/view_model/refresh/refresh_cubit.dart';
+import 'package:mate_order_super_user/Features/Home/presentation/view_model/get_all_products/get_all_products_cubit.dart';
 import 'package:mate_order_super_user/constants.dart';
 import 'package:mate_order_super_user/core/widgets/app_bar_style.dart';
 import 'package:mate_order_super_user/core/widgets/drawer.dart';
@@ -13,13 +13,12 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<GetAllProductsCubit>().getProducts();
+
     return Scaffold(
       appBar: mainAppBar('Home'),
-      drawer: MainDrawer(),
-      body: const Padding(
-        padding: EdgeInsets.all(10.0),
-        child: HomeViewBody(),
-      ),
+      drawer: const MainDrawer(),
+      body: const HomeViewBody(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -30,17 +29,18 @@ class HomeView extends StatelessWidget {
           SizedBox(
             width: 100,
             child: FloatingActionButton(
+              backgroundColor: kPrimaryColor7,
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return CustomAddProductDialog();
+                    return const CustomAddProductDialog();
                   },
                 );
               },
-              child: Text('Add Product'),
               isExtended: true,
               mini: false,
+              child: const Text('Add Product'),
             ),
           ),
         ],

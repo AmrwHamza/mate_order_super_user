@@ -9,7 +9,9 @@ class ArchiveBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<GetArchiveCubit>().getArchive();
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return BlocConsumer<GetArchiveCubit, GetArchiveState>(
       listener: (context, state) {
         if (state is GetArchiveError) {
@@ -25,9 +27,15 @@ class ArchiveBody extends StatelessWidget {
         } else if (state is GetArchiveSuccess) {
           return GridView.builder(
             // addAutomaticKeepAlives: true,
+            padding: const EdgeInsets.all(10),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount:
+                  (screenWidth ~/ 200), 
+              mainAxisSpacing: screenHeight * 0.01,
+              crossAxisSpacing: screenWidth * 0.02,
+              childAspectRatio: 3 / 3.7,
+            ),
 
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, mainAxisSpacing: 10, crossAxisSpacing: 10),
             itemCount: state.products.length + 5,
             itemBuilder: (context, index) {
               if (index >= state.products.length) {
@@ -44,6 +52,6 @@ class ArchiveBody extends StatelessWidget {
         return const SizedBox.shrink();
       },
     );
-    ;
+    
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mate_order_super_user/Features/auth/login/presentation/views/widgets/login_view_body.dart';
+import 'package:mate_order_super_user/Features/auth/logout/presentation/view_model/cubit/logout_cubit.dart';
 import 'package:mate_order_super_user/constants.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -27,19 +28,38 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
+            leading: const Icon(Icons.home),
+            title: const Text('Home'),
             onTap: () {
               context.go('/home');
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Archive'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Archive'),
             onTap: () {
               context.go('/archive');
               Navigator.pop(context);
+            },
+          ),
+          BlocConsumer<LogoutCubit, LogoutState>(
+            listener: (context, state) {
+              if (state is LogoutSuccess) {
+                context.go('/');
+              }
+            },
+            builder: (context, state) {
+              if (state is LogoutLoading) {
+                const Center(child: CircularProgressIndicator());
+              }
+              return ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Log Out'),
+                onTap: () {
+                  context.read<LogoutCubit>().logout('auth/logout');
+                },
+              );
             },
           ),
         ],

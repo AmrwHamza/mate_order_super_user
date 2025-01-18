@@ -32,7 +32,7 @@ class _DragDropFileState extends State<DragDropFile> {
           borderType: BorderType.RRect,
           color: Colors.white,
           strokeWidth: 3,
-          dashPattern: [8,4],
+          dashPattern: const [8,4],
           padding: EdgeInsets.zero,
           radius: const Radius.circular(10),
           child: Stack(
@@ -92,10 +92,6 @@ class _DragDropFileState extends State<DragDropFile> {
     final mime = await controller.getFileMIME(event);
     final bytes = await controller.getFileSize(event);
     final url = await controller.createFileUrl(event);
-    print('Name: $name');
-    print('mime: $mime');
-    print('bytes: $bytes');
-    print('url: $url');
 
     final droppedFile =
         DroppedFile(url: url, name: name, mime: mime, bytes: bytes);

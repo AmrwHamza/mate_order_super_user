@@ -83,10 +83,8 @@ class Api {
         queryParameters: queryParameters,
         options: Options(headers: headers),
       );
-      print("==============================$response");
       return Right(response.data);
     } on DioException catch (dioException) {
-      print('we are left ===============');
       return Left(handleDioError(dioException));
     } catch (e) {
       return const Left(UnknownFailure());
@@ -165,4 +163,6 @@ class Api {
 
     return 'Unknown error occurred';
   }
+
+  postWithAuth({required String endPoint, required data}) {}
 }
