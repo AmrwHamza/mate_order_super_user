@@ -34,7 +34,7 @@ class HomeViewBody extends StatelessWidget {
               crossAxisCount: (screenWidth ~/ 200),
               mainAxisSpacing: screenHeight * 0.01,
               crossAxisSpacing: screenWidth * 0.02,
-              childAspectRatio: 3 / 3.9,
+              childAspectRatio: 3 / 4.2,
             ),
 
             itemCount: state.products.length + 5,
