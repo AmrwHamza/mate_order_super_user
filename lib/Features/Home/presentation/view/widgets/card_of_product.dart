@@ -64,27 +64,13 @@ class CardOfProduct extends StatelessWidget {
                     aspectRatio: 3.4 / 2,
                     child: buildImg("$baseurlImg${product.imagePath!}"),
 
-                    // child: Container(
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(10),
-                    //     image: DecorationImage(
-                    //       // image:AssetImage() ,
-                    //       // image: AssetImage(AssetsData.product),
-                    //       // image: NetworkImage(
-                    //       //     "https://c862-130-180-148-76.ngrok-free.app/storage/project/products/11/Screenshot (7).png"
-                    //       //     "https://a8bc-146-70-202-35.ngrok-free.app/storage/project/products/4/Tile_Border_Travertine.bmp"), //products/5/PSX_20200918_165328.jpg
-                    //       image: image(product),
-                    //       fit: BoxFit.fill,
-                    //     ),
-                    //   ),
-                    // ),
+                   
                   ),
                   Text(
                     product.name ?? 'No Name',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "${product.price} ",
